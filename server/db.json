@@ -1,0 +1,20 @@
+{
+  "vehicles": [],
+  "enquiries": [],
+  "testDrives": [],
+  "financingApps": [],
+  "tradeIns": [],
+  "reviews": [],
+  "settings": {
+    "dealershipName": "Apex Motors Kenya",
+    "tagline": "Find Your Next Car With Confidence",
+    "phone": "+254 759 508 348",
+    "whatsappNumber": "254759508348",
+    "email": "mbitheabigail20@gmail.com",
+    "mainAddress": "Plot 42, Ngong Road, Nairobi, Kenya",
+    "currencySymbol": "KES",
+    "currencyCode": "KES",
+    "defaultFinancingRate": 13.5
+  },
+  "auditLogs": []
+}

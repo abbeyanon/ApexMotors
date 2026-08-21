@@ -34,18 +34,18 @@ export const FinancingPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-950 text-slate-100 py-12">
+    <div className="min-h-screen bg-slate-50 dark:bg-dark-950 text-slate-900 dark:text-slate-100 py-12 transition-colors">
       <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-semibold mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-3">
             <CreditCard className="w-3.5 h-3.5" />
             <span>Bank Asset Finance Facilitation</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
             Drive Your Dream Car with Easy Bank Asset Financing
           </h1>
-          <p className="text-sm sm:text-base text-slate-400 mt-2">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2">
             We partner with Kenya's tier-1 financial institutions to facilitate vehicle asset finance loans with up to 90% financing and fast 48-hour approvals.
           </p>
         </div>
@@ -58,23 +58,23 @@ export const FinancingPage: React.FC = () => {
         {/* Partner Banks Grid */}
         <div className="mb-16">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <h2 className="text-2xl font-display font-bold text-white">Our Official Banking Partners</h2>
-            <p className="text-xs text-slate-400 mt-1">Direct tie-ups for accelerated appraisal and pre-approval.</p>
+            <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Our Official Banking Partners</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Direct tie-ups for accelerated appraisal and pre-approval.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {banks.map((bank, idx) => (
               <div
                 key={idx}
-                className="bg-dark-900 border border-slate-800 rounded-2xl p-6 hover:border-brand-500/50 transition flex flex-col justify-between"
+                className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 hover:border-brand-500 transition-all shadow-sm flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-dark-800 border border-slate-700 flex items-center justify-center text-brand-400 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-dark-800 border border-brand-200 dark:border-slate-700 flex items-center justify-center text-brand-600 dark:text-brand-400 mb-4">
                     <Building2 className="w-5 h-5" />
                   </div>
-                  <h3 className="text-base font-bold text-white mb-1">{bank.name}</h3>
-                  <p className="text-xs text-brand-400 font-semibold mb-3">{bank.financing}</p>
-                  <div className="space-y-1 text-xs text-slate-400">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">{bank.name}</h3>
+                  <p className="text-xs text-brand-600 dark:text-brand-400 font-semibold mb-3">{bank.financing}</p>
+                  <div className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
                     <p>• Tenure: {bank.tenure}</p>
                     <p>• {bank.feature}</p>
                   </div>
@@ -85,14 +85,14 @@ export const FinancingPage: React.FC = () => {
         </div>
 
         {/* Requirements & Process Checklist */}
-        <div className="bg-dark-900 border border-slate-800 rounded-3xl p-8 sm:p-12 mb-16">
+        <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 mb-16 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <span className="text-xs font-bold text-brand-400 uppercase tracking-wider">Fast-Track Loan Approval</span>
-              <h3 className="text-2xl sm:text-3xl font-display font-extrabold text-white">
+              <span className="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">Fast-Track Loan Approval</span>
+              <h3 className="text-2xl sm:text-3xl font-display font-extrabold text-slate-900 dark:text-white">
                 Documents Required for Car Loan Approval in Kenya
               </h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 Our in-house financing advisors assist you with assembling the required paperwork and liaising directly with credit analysts for rapid approval.
               </p>
               <div className="pt-2">
@@ -100,7 +100,7 @@ export const FinancingPage: React.FC = () => {
                   href={getWhatsAppLink(undefined, "Hello, I would like guidance on car asset financing requirements.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg transition"
                 >
                   <span>Speak with Asset Finance Advisor</span>
                 </a>
@@ -109,11 +109,11 @@ export const FinancingPage: React.FC = () => {
 
             <div className="lg:col-span-6 space-y-3">
               {requirements.map((req, i) => (
-                <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-dark-950 border border-slate-800">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div key={i} className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-950 border border-slate-100 dark:border-slate-800">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-white">{req.title}</h4>
-                    <p className="text-[11px] text-slate-400 mt-0.5">{req.desc}</p>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">{req.title}</h4>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{req.desc}</p>
                   </div>
                 </div>
               ))}

@@ -194,12 +194,36 @@ app.put('/api/settings', (req, res) => {
   res.json(db.settings);
 });
 
-// Serve compiled Frontend static assets
+// Explicit Favicon Routes
+const publicPath = path.join(__dirname, '../public');
 const distPath = path.join(__dirname, '../dist');
+
+app.get('/favicon.ico', (req, res) => {
+  const icoPath = path.join(publicPath, 'favicon.ico');
+  const svgPath = path.join(publicPath, 'favicon.svg');
+  if (fs.existsSync(icoPath)) {
+    res.sendFile(icoPath);
+  } else if (fs.existsSync(svgPath)) {
+    res.type('image/svg+xml').sendFile(svgPath);
+  } else {
+    res.status(204).end();
+  }
+});
+
+app.get('/favicon.svg', (req, res) => {
+  const svgPath = path.join(publicPath, 'favicon.svg');
+  if (fs.existsSync(svgPath)) {
+    res.type('image/svg+xml').sendFile(svgPath);
+  } else {
+    res.status(204).end();
+  }
+});
+
+// Serve compiled Frontend static assets
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
 
-  // SPA fallback for all remaining non-API routes
+  // SPA fallback for all client-side routes
   app.use((req, res) => {
     if (!req.path.startsWith('/api')) {
       res.sendFile(path.join(distPath, 'index.html'));

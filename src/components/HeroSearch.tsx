@@ -46,7 +46,7 @@ export const HeroSearch: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[640px] lg:min-h-[720px] flex items-center justify-center overflow-hidden bg-dark-950">
+    <div className="hero-section relative min-h-[640px] lg:min-h-[720px] flex items-center justify-center overflow-hidden bg-dark-950">
       {/* Background Media & Gradients */}
       <div className="absolute inset-0 z-0">
         <img

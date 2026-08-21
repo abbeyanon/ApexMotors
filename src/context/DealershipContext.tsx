@@ -138,7 +138,7 @@ export const DealershipProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   // Theme state
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('apex_theme');
-    return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+    return (saved === 'light' || saved === 'dark') ? saved : 'light';
   });
 
   // Apply theme to HTML root

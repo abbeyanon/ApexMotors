@@ -1,12 +1,107 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+/* Light and Dark Theme Variable Overrides */
+html:not(.dark) {
+  --color-dark-950: #f8fafc;
+  --color-dark-900: #ffffff;
+  --color-dark-850: #f1f5f9;
+  --color-dark-800: #f1f5f9;
+  --color-dark-750: #e2e8f0;
+  --color-dark-700: #cbd5e1;
+}
+
+html.dark {
+  --color-dark-950: #070a12;
+  --color-dark-900: #0b0f19;
+  --color-dark-850: #111726;
+  --color-dark-800: #161e31;
+  --color-dark-750: #1a233a;
+  --color-dark-700: #232f48;
+}
+
 @layer base {
   body {
-    background-color: #070a12;
-    color: #f1f5f9;
+    transition: background-color 0.2s ease, color 0.2s ease;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+  
+  html.dark body {
+    background-color: #070a12;
+    color: #f1f5f9;
+  }
+
+  html:not(.dark) body {
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+}
+
+/* Light Mode Global Element Adaptations */
+html:not(.dark) .bg-dark-950 {
+  background-color: #f8fafc !important;
+}
+
+html:not(.dark) .bg-dark-900 {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+html:not(.dark) .bg-dark-850 {
+  background-color: #f1f5f9 !important;
+}
+
+html:not(.dark) .bg-dark-800 {
+  background-color: #f1f5f9 !important;
+}
+
+html:not(.dark) .bg-dark-750 {
+  background-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .border-slate-800 {
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .border-slate-750 {
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .border-slate-700 {
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) .text-white {
+  color: #0f172a !important;
+}
+
+html:not(.dark) .text-slate-100 {
+  color: #0f172a !important;
+}
+
+html:not(.dark) .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html:not(.dark) .text-slate-300 {
+  color: #334155 !important;
+}
+
+html:not(.dark) .text-slate-400 {
+  color: #64748b !important;
+}
+
+html:not(.dark) input,
+html:not(.dark) select,
+html:not(.dark) textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #94a3b8 !important;
 }
 
 /* Custom scrollbar */
@@ -15,13 +110,19 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #070a12;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 4px;
 }
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
 ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
 

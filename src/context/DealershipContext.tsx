@@ -42,6 +42,11 @@ interface DealershipContextType {
   auditLogs: AuditLog[];
   salesRecords: SalesRecord[];
   
+  // Theme state (Dark / Light)
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
+  setThemeMode: (mode: 'dark' | 'light') => void;
+
   // User customer states
   favorites: string[]; // vehicle IDs
   comparison: string[]; // vehicle IDs (up to 4)
@@ -130,6 +135,32 @@ const defaultFilters: FilterState = {
 const DealershipContext = createContext<DealershipContextType | undefined>(undefined);
 
 export const DealershipProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Theme state
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('apex_theme');
+    return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+  });
+
+  // Apply theme to HTML root
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
+    localStorage.setItem('apex_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  const setThemeMode = (mode: 'dark' | 'light') => {
+    setTheme(mode);
+  };
+
   // Load initial states with versioned localStorage key to avoid stale data
   const [vehicles, setVehicles] = useState<Vehicle[]>(() => {
     const saved = localStorage.getItem('apex_vehicles_v4');
@@ -137,7 +168,7 @@ export const DealershipProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   });
 
   const [settings, setSettings] = useState<DealershipSettings>(() => {
-    const saved = localStorage.getItem('apex_settings_v3_v3');
+    const saved = localStorage.getItem('apex_settings_v3');
     return saved ? JSON.parse(saved) : initialSettings;
   });
 
@@ -242,7 +273,7 @@ export const DealershipProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, [vehicles]);
 
   useEffect(() => {
-    localStorage.setItem('apex_settings_v3_v3', JSON.stringify(settings));
+    localStorage.setItem('apex_settings_v3', JSON.stringify(settings));
   }, [settings]);
 
   useEffect(() => {
@@ -325,7 +356,7 @@ export const DealershipProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   };
 
   const getWhatsAppLink = (vehicle?: Vehicle, customText?: string) => {
-    const cleanNumber = settings.whatsappNumber.replace(/[^0-9]/g, '');
+    const cleanNumber = (settings.whatsappNumber || '254759508348').replace(/[^0-9]/g, '');
     let text = '';
     if (vehicle) {
       const priceStr = `${settings.currencySymbol} ${vehicle.price.toLocaleString()}`;
@@ -704,6 +735,9 @@ export const DealershipProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         salespeople,
         auditLogs,
         salesRecords,
+        theme,
+        toggleTheme,
+        setThemeMode,
         favorites,
         comparison,
         enquiries,

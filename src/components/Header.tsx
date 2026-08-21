@@ -15,7 +15,9 @@ import {
   ChevronDown,
   UserCheck,
   Search,
-  DollarSign
+  DollarSign,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export const Header: React.FC = () => {
@@ -28,7 +30,9 @@ export const Header: React.FC = () => {
     logoutAdmin,
     loginAdmin,
     getWhatsAppLink,
-    updateSettings
+    updateSettings,
+    theme,
+    toggleTheme
   } = useDealership();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -68,10 +72,29 @@ export const Header: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-5">
+            {/* Theme Toggle in Top Banner */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-1 text-slate-300 hover:text-white bg-dark-800 px-2.5 py-0.5 rounded-lg border border-slate-700 transition"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Sun className="w-3 h-3 text-amber-400" />
+                  <span>Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-3 h-3 text-brand-400" />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
+
             {/* Currency Switcher */}
             <button
               onClick={toggleCurrency}
-              className="flex items-center gap-1 text-slate-300 hover:text-white bg-dark-800 px-2 py-0.5 rounded border border-slate-700 transition"
+              className="flex items-center gap-1 text-slate-300 hover:text-white bg-dark-800 px-2 py-0.5 rounded-lg border border-slate-700 transition"
               title="Toggle KES / USD currency conversion"
             >
               <DollarSign className="w-3 h-3 text-amber-400" />
@@ -159,8 +182,8 @@ export const Header: React.FC = () => {
               to="/"
               className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive('/')
-                  ? 'text-brand-500 bg-brand-500/10'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
+                  ? 'text-brand-500 bg-brand-500/10 font-semibold'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               Home
@@ -170,8 +193,8 @@ export const Header: React.FC = () => {
               to="/inventory"
               className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive('/inventory')
-                  ? 'text-brand-500 bg-brand-500/10'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
+                  ? 'text-brand-500 bg-brand-500/10 font-semibold'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               Inventory
@@ -181,8 +204,8 @@ export const Header: React.FC = () => {
               to="/financing"
               className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive('/financing')
-                  ? 'text-brand-500 bg-brand-500/10'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
+                  ? 'text-brand-500 bg-brand-500/10 font-semibold'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               Financing
@@ -192,8 +215,8 @@ export const Header: React.FC = () => {
               to="/trade-in"
               className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive('/trade-in')
-                  ? 'text-brand-500 bg-brand-500/10'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
+                  ? 'text-brand-500 bg-brand-500/10 font-semibold'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               Sell / Trade-In
@@ -203,8 +226,8 @@ export const Header: React.FC = () => {
               to="/services"
               className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive('/services')
-                  ? 'text-brand-500 bg-brand-500/10'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
+                  ? 'text-brand-500 bg-brand-500/10 font-semibold'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               Services
@@ -217,7 +240,7 @@ export const Header: React.FC = () => {
               onMouseLeave={() => setDropdownOpen(null)}
             >
               <button
-                className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/60 transition-colors"
+                className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
               >
                 <span>Company</span>
                 <ChevronDown className="w-4 h-4 text-slate-400" />
@@ -262,6 +285,19 @@ export const Header: React.FC = () => {
 
           {/* Right Action Icons & Buttons */}
           <div className="flex items-center gap-3">
+            {/* Theme Toggle in main bar */}
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-xl bg-dark-850 hover:bg-dark-800 border border-slate-800 text-slate-300 hover:text-white transition group"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-amber-400 group-hover:rotate-45 transition-transform" />
+              ) : (
+                <Moon className="w-5 h-5 text-brand-500 group-hover:-rotate-12 transition-transform" />
+              )}
+            </button>
+
             {/* Compare vehicles button */}
             <Link
               to="/compare"
@@ -299,10 +335,10 @@ export const Header: React.FC = () => {
               <span>Book Test Drive</span>
             </button>
 
-            {/* Mobile menu trigger */}
+            {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-dark-850 border border-slate-800 text-slate-300 hover:text-white"
+              className="lg:hidden p-2.5 rounded-xl bg-dark-850 border border-slate-800 text-slate-300 hover:text-white"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -312,21 +348,32 @@ export const Header: React.FC = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-dark-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top duration-200">
-          <div className="grid grid-cols-2 gap-2 pb-2 border-b border-slate-800">
-            <button
-              onClick={toggleCurrency}
-              className="flex items-center justify-center gap-1.5 py-2 px-3 bg-dark-800 rounded-lg text-xs font-semibold text-slate-200 border border-slate-700"
-            >
-              <span>Currency:</span>
-              <span className="text-amber-400">{settings.currencyCode}</span>
-            </button>
+        <div className="lg:hidden bg-dark-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-4 animate-in slide-in-from-top-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-dark-800 text-xs font-semibold text-slate-200 border border-slate-700"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-brand-400" />}
+                <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+              </button>
+
+              <button
+                onClick={toggleCurrency}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-dark-800 text-xs font-semibold text-slate-200 border border-slate-700"
+              >
+                <DollarSign className="w-3.5 h-3.5 text-amber-400" />
+                <span>{settings.currencyCode}</span>
+              </button>
+            </div>
+
             <a
               href={`tel:${settings.phone.replace(/\s+/g, '')}`}
-              className="flex items-center justify-center gap-1.5 py-2 px-3 bg-dark-800 rounded-lg text-xs font-semibold text-slate-200 border border-slate-700"
+              className="flex items-center gap-1 text-xs text-brand-400 font-semibold"
             >
-              <Phone className="w-3.5 h-3.5 text-brand-500" />
-              <span>Call Us</span>
+              <Phone className="w-3.5 h-3.5" />
+              <span>Call Dealership</span>
             </a>
           </div>
 
@@ -334,8 +381,8 @@ export const Header: React.FC = () => {
             <Link
               to="/"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
               }`}
             >
               Home
@@ -343,98 +390,77 @@ export const Header: React.FC = () => {
             <Link
               to="/inventory"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/inventory') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/inventory') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
               }`}
             >
-              Inventory & Cars for Sale
+              Inventory / Marketplace
             </Link>
             <Link
               to="/financing"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/financing') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/financing') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
               }`}
             >
-              Asset Financing & Calculator
+              Asset Financing
             </Link>
             <Link
               to="/trade-in"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/trade-in') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/trade-in') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
               }`}
             >
-              Sell / Trade-In Your Car
-            </Link>
-            <Link
-              to="/services"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/services') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
-              }`}
-            >
-              Our Dealership Services
-            </Link>
-            <Link
-              to="/reviews"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/reviews') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
-              }`}
-            >
-              Customer Reviews
-            </Link>
-            <Link
-              to="/blog"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/blog') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
-              }`}
-            >
-              Automotive News & Guides
+              Sell / Trade-In Car
             </Link>
             <Link
               to="/about"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/about') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/about') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
               }`}
             >
               About Apex Motors
             </Link>
             <Link
-              to="/contact"
+              to="/reviews"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/contact') ? 'bg-brand-500/20 text-brand-400' : 'text-slate-200 hover:bg-slate-800'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/reviews') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
               }`}
             >
-              Contact & Yard Locations
+              Customer Reviews
+            </Link>
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition ${
+                isActive('/contact') ? 'bg-brand-600 text-white' : 'text-slate-200 hover:bg-dark-800'
+              }`}
+            >
+              Showroom Yards & Contact
+            </Link>
+            <Link
+              to="/admin"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20"
+            >
+              Admin & CRM Portal
             </Link>
           </div>
 
-          <div className="pt-3 border-t border-slate-800 space-y-2">
+          <div className="pt-2">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 setIsTestDriveModalOpen(true);
               }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm"
+              className="w-full py-3 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-glow flex items-center justify-center gap-2"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book a Test Drive</span>
+              <span>Book a Test Drive Session</span>
             </button>
-
-            <a
-              href={getWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Chat on WhatsApp</span>
-            </a>
           </div>
         </div>
       )}

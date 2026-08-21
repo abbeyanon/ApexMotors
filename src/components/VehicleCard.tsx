@@ -37,8 +37,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
     toggleComparison,
     getWhatsAppLink,
     setActiveModalVehicle,
-    setIsTestDriveModalOpen,
-    settings
+    setIsTestDriveModalOpen
   } = useDealership();
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -73,9 +72,9 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
 
   if (viewMode === 'list') {
     return (
-      <div className="bg-dark-900 border border-slate-800 hover:border-brand-500/40 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-card flex flex-col md:flex-row group">
+      <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col md:flex-row group">
         {/* Image Box */}
-        <div className="relative md:w-88 h-60 md:h-auto shrink-0 bg-dark-950 overflow-hidden">
+        <div className="relative md:w-88 h-60 md:h-auto shrink-0 bg-slate-100 dark:bg-dark-950 overflow-hidden">
           <Link to={`/vehicle/${vehicle.id}`} className="block w-full h-full">
             {!imageError ? (
               <img
@@ -85,24 +84,24 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-dark-900 to-dark-800 p-6 text-center">
+              <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-dark-900 p-6 text-center">
                 <Car className="w-12 h-12 text-brand-500 mb-2" />
-                <span className="text-sm font-bold text-white">{vehicle.year} {vehicle.make} {vehicle.model}</span>
-                <span className="text-xs text-brand-400 font-mono mt-1">#{vehicle.stockNo}</span>
+                <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.year} {vehicle.make} {vehicle.model}</span>
+                <span className="text-xs text-brand-600 dark:text-brand-400 font-mono mt-1">#{vehicle.stockNo}</span>
               </div>
             )}
           </Link>
 
           {/* Badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+          <div className="absolute top-3 left-3 flex flex-col gap-1 z-10 pointer-events-none">
             {vehicle.status === 'reserved' && (
               <span className="px-2.5 py-1 rounded-md bg-amber-500 text-dark-950 text-[10px] font-bold uppercase tracking-wider shadow">
                 Reserved
               </span>
             )}
             {vehicle.status === 'sold' && (
-              <span className="px-2.5 py-1 rounded-md bg-slate-700 text-slate-200 text-[10px] font-bold uppercase tracking-wider shadow">
-                Sold
+              <span className="px-2.5 py-1 rounded-md bg-slate-700 text-white text-[10px] font-bold uppercase tracking-wider shadow">
+                Sold Out
               </span>
             )}
             {vehicle.isFeatured && vehicle.status === 'available' && (
@@ -122,13 +121,13 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
             <div className="absolute inset-y-0 inset-x-2 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 onClick={prevImage}
-                className="w-7 h-7 rounded-full bg-dark-950/80 text-white flex items-center justify-center backdrop-blur-sm"
+                className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-sm hover:bg-black/80 transition"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={nextImage}
-                className="w-7 h-7 rounded-full bg-dark-950/80 text-white flex items-center justify-center backdrop-blur-sm"
+                className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-sm hover:bg-black/80 transition"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -136,13 +135,13 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
           )}
 
           {/* Photo Count */}
-          <div className="absolute bottom-3 left-3 px-2 py-1 rounded-md bg-dark-950/80 backdrop-blur-sm text-slate-300 text-[11px] flex items-center gap-1">
+          <div className="absolute bottom-3 left-3 px-2 py-1 rounded-md bg-black/60 text-white text-[11px] flex items-center gap-1 backdrop-blur-sm">
             <Camera className="w-3.5 h-3.5" />
             <span>{vehicle.images.length} Photos</span>
           </div>
 
           {/* Stock No */}
-          <div className="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-dark-950/80 backdrop-blur-sm text-slate-400 text-[10px] font-mono">
+          <div className="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-black/60 text-white text-[10px] font-mono backdrop-blur-sm font-bold">
             #{vehicle.stockNo}
           </div>
         </div>
@@ -152,28 +151,28 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
           <div>
             <div className="flex items-start justify-between gap-3 mb-1">
               <div>
-                <span className="text-[11px] font-bold text-brand-400 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">
                   {vehicle.condition}
                 </span>
                 <Link
                   to={`/vehicle/${vehicle.id}`}
-                  className="block text-lg sm:text-xl font-bold text-white hover:text-brand-400 transition leading-snug"
+                  className="block text-lg sm:text-xl font-bold text-slate-900 dark:text-white hover:text-brand-600 dark:hover:text-brand-400 transition leading-snug"
                 >
                   {vehicle.year} {vehicle.make} {vehicle.model}
                 </Link>
-                <p className="text-xs text-slate-400 font-medium">{vehicle.variant}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{vehicle.variant}</p>
               </div>
 
               {/* Price & Monthly Estimate */}
               <div className="text-right shrink-0">
-                <div className="text-xl sm:text-2xl font-extrabold text-white font-display">
+                <div className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-display">
                   {formatPrice(vehicle.price)}
                 </div>
-                <div className="text-[11px] text-emerald-400 font-semibold mt-0.5">
+                <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
                   Est. {formatPrice(monthlyEst)}/mo
                 </div>
                 {discount > 0 && (
-                  <div className="text-[10px] text-cyan-400 line-through">
+                  <div className="text-[10px] text-slate-400 line-through">
                     {formatPrice(vehicle.originalPrice!)}
                   </div>
                 )}
@@ -181,21 +180,21 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
             </div>
 
             {/* Spec Matrix */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 my-3.5 py-2.5 border-y border-slate-800/80 text-xs text-slate-300">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 my-3.5 py-2.5 border-y border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
               <div className="flex items-center gap-1.5">
-                <Gauge className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                <Gauge className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
                 <span>{vehicle.mileage.toLocaleString()} km</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Fuel className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                <Fuel className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
                 <span>{vehicle.fuelType}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                <Compass className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
                 <span>{vehicle.transmission}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
                 <span className="truncate">{vehicle.locationYard}</span>
               </div>
             </div>
@@ -208,20 +207,20 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
                 onClick={() => toggleFavorite(vehicle.id)}
                 className={`p-2 rounded-xl border transition ${
                   isFav
-                    ? 'bg-blue-500/20 border-blue-500/40 text-blue-400'
-                    : 'bg-dark-850 border-slate-700 text-slate-400 hover:text-white'
+                    ? 'bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400'
+                    : 'bg-slate-100 dark:bg-dark-850 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
                 title="Save vehicle"
               >
-                <Heart className={`w-4 h-4 ${isFav ? 'fill-blue-500' : ''}`} />
+                <Heart className={`w-4 h-4 ${isFav ? 'fill-blue-500 text-blue-500' : ''}`} />
               </button>
 
               <button
                 onClick={() => toggleComparison(vehicle.id)}
                 className={`p-2 rounded-xl border transition ${
                   isCompared
-                    ? 'bg-brand-500/20 border-brand-500/40 text-brand-400'
-                    : 'bg-dark-850 border-slate-700 text-slate-400 hover:text-white'
+                    ? 'bg-brand-500/10 border-brand-500/40 text-brand-600 dark:text-brand-400'
+                    : 'bg-slate-100 dark:bg-dark-850 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
                 title="Compare vehicle"
               >
@@ -232,7 +231,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
                 href={getWhatsAppLink(vehicle)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-950 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-900/60 text-xs font-semibold transition"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-500/40 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs font-semibold transition"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>WhatsApp</span>
@@ -245,7 +244,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
                   setActiveModalVehicle(vehicle);
                   setIsTestDriveModalOpen(true);
                 }}
-                className="px-3.5 py-2 rounded-xl bg-dark-850 hover:bg-dark-800 border border-slate-700 text-slate-200 text-xs font-semibold transition"
+                className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-dark-850 hover:bg-slate-200 dark:hover:bg-dark-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition"
               >
                 Test Drive
               </button>
@@ -266,9 +265,9 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
 
   // Grid Mode (Marketplace Card)
   return (
-    <div className="bg-dark-900 border border-slate-800 hover:border-brand-500/40 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-card flex flex-col group relative">
+    <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col group relative">
       {/* Image Container */}
-      <div className="relative h-52 sm:h-60 w-full bg-dark-950 overflow-hidden">
+      <div className="relative h-52 sm:h-60 w-full bg-slate-100 dark:bg-dark-950 overflow-hidden">
         <Link to={`/vehicle/${vehicle.id}`} className="block w-full h-full">
           {!imageError ? (
             <img
@@ -278,10 +277,10 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-dark-900 to-dark-800 p-4 text-center">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-dark-900 p-4 text-center">
               <Car className="w-10 h-10 text-brand-500 mb-1.5" />
-              <span className="text-xs font-bold text-white">{vehicle.year} {vehicle.make} {vehicle.model}</span>
-              <span className="text-[10px] text-brand-400 font-mono mt-0.5">#{vehicle.stockNo}</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-white">{vehicle.year} {vehicle.make} {vehicle.model}</span>
+              <span className="text-[10px] text-brand-600 dark:text-brand-400 font-mono mt-0.5">#{vehicle.stockNo}</span>
             </div>
           )}
         </Link>
@@ -294,7 +293,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
             </span>
           )}
           {vehicle.status === 'sold' && (
-            <span className="px-2 py-0.5 rounded-md bg-slate-700 text-slate-200 text-[10px] font-bold uppercase tracking-wider shadow">
+            <span className="px-2 py-0.5 rounded-md bg-slate-700 text-white text-[10px] font-bold uppercase tracking-wider shadow">
               Sold Out
             </span>
           )}
@@ -317,7 +316,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
             className={`p-2 rounded-xl backdrop-blur-md transition ${
               isCompared
                 ? 'bg-brand-600 text-white shadow-lg'
-                : 'bg-dark-950/75 text-slate-300 hover:text-white hover:bg-dark-900'
+                : 'bg-black/50 hover:bg-black/75 text-white'
             }`}
             title="Compare vehicle"
           >
@@ -329,7 +328,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
             className={`p-2 rounded-xl backdrop-blur-md transition ${
               isFav
                 ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-dark-950/75 text-slate-300 hover:text-white hover:bg-dark-900'
+                : 'bg-black/50 hover:bg-black/75 text-white'
             }`}
             title="Save to favorites"
           >
@@ -342,13 +341,13 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
           <div className="absolute inset-y-0 inset-x-2 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={prevImage}
-              className="w-6 h-6 rounded-full bg-dark-950/80 text-white flex items-center justify-center backdrop-blur-sm"
+              className="w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-sm hover:bg-black/80"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={nextImage}
-              className="w-6 h-6 rounded-full bg-dark-950/80 text-white flex items-center justify-center backdrop-blur-sm"
+              className="w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-sm hover:bg-black/80"
             >
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
@@ -356,12 +355,12 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
         )}
 
         {/* Photo count and Stock No */}
-        <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-md bg-dark-950/80 backdrop-blur-sm text-slate-300 text-[10px] flex items-center gap-1">
+        <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm text-white text-[10px] flex items-center gap-1">
           <Camera className="w-3 h-3" />
           <span>{vehicle.images.length}</span>
         </div>
 
-        <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-dark-950/80 backdrop-blur-sm text-brand-300 text-[10px] font-bold font-mono">
+        <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold font-mono">
           #{vehicle.stockNo}
         </div>
       </div>
@@ -369,35 +368,35 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
       {/* Details Body */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
-          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-            <span className="font-semibold text-brand-400 uppercase tracking-wider">{vehicle.condition}</span>
-            <span className="flex items-center gap-1 text-slate-400">
-              <MapPin className="w-3 h-3 text-slate-500" />
+          <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1">
+            <span className="font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider">{vehicle.condition}</span>
+            <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+              <MapPin className="w-3 h-3 text-slate-400" />
               <span className="truncate max-w-[120px]">{vehicle.locationYard.split('-')[0]}</span>
             </span>
           </div>
 
           <Link
             to={`/vehicle/${vehicle.id}`}
-            className="block text-base sm:text-lg font-bold text-white hover:text-brand-400 transition leading-snug line-clamp-1"
+            className="block text-base sm:text-lg font-bold text-slate-900 dark:text-white hover:text-brand-600 dark:hover:text-brand-400 transition leading-snug line-clamp-1"
           >
             {vehicle.year} {vehicle.make} {vehicle.model}
           </Link>
-          <p className="text-xs text-slate-400 line-clamp-1 mb-3">{vehicle.variant}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mb-3">{vehicle.variant}</p>
 
           {/* Marketplace Specs Grid */}
-          <div className="grid grid-cols-3 gap-1.5 py-2 px-2.5 bg-dark-850 rounded-xl text-xs text-slate-300 mb-3.5">
+          <div className="grid grid-cols-3 gap-1.5 py-2 px-2.5 bg-slate-50 dark:bg-dark-850 rounded-xl text-xs text-slate-700 dark:text-slate-300 mb-3.5 border border-slate-100 dark:border-slate-800">
             <div className="flex flex-col items-center justify-center text-center">
               <span className="text-[10px] text-slate-400">Mileage</span>
-              <span className="font-bold text-white text-[11px] sm:text-xs">{vehicle.mileage.toLocaleString()} km</span>
+              <span className="font-bold text-slate-900 dark:text-white text-[11px] sm:text-xs">{vehicle.mileage.toLocaleString()} km</span>
             </div>
-            <div className="flex flex-col items-center justify-center text-center border-x border-slate-750">
+            <div className="flex flex-col items-center justify-center text-center border-x border-slate-200 dark:border-slate-750">
               <span className="text-[10px] text-slate-400">Engine</span>
-              <span className="font-bold text-white text-[11px] sm:text-xs truncate w-full">{vehicle.engineSize.split(' ')[0]}</span>
+              <span className="font-bold text-slate-900 dark:text-white text-[11px] sm:text-xs truncate w-full">{vehicle.engineSize.split(' ')[0]}</span>
             </div>
             <div className="flex flex-col items-center justify-center text-center">
               <span className="text-[10px] text-slate-400">Gearbox</span>
-              <span className="font-bold text-white text-[11px] sm:text-xs truncate w-full">{vehicle.transmission}</span>
+              <span className="font-bold text-slate-900 dark:text-white text-[11px] sm:text-xs truncate w-full">{vehicle.transmission}</span>
             </div>
           </div>
         </div>
@@ -407,13 +406,13 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
           <div className="flex items-baseline justify-between mb-3">
             <div>
               <span className="text-[10px] text-slate-400 uppercase font-medium block">Cash Price</span>
-              <span className="text-lg sm:text-xl font-extrabold text-white font-display">
+              <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-display">
                 {formatPrice(vehicle.price)}
               </span>
             </div>
             <div className="text-right">
               <span className="text-[10px] text-slate-400 uppercase font-medium block">Asset Finance</span>
-              <span className="text-xs font-bold text-emerald-400">
+              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
                 From {formatPrice(monthlyEst)}/mo
               </span>
             </div>
@@ -424,7 +423,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, viewMode = 'g
               href={getWhatsAppLink(vehicle)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-950/90 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-900/60 text-xs font-semibold transition active:scale-95"
+              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-500/40 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs font-semibold transition active:scale-95"
             >
               <MessageCircle className="w-4 h-4" />
               <span>WhatsApp</span>

@@ -4,29 +4,28 @@ import { useDealership } from '../context/DealershipContext';
 import { VehicleCard } from '../components/VehicleCard';
 import { FinanceCalculator } from '../components/FinanceCalculator';
 import {
+  ShieldCheck,
+  Calendar,
+  Gauge,
+  Fuel,
+  Compass,
+  MapPin,
   Heart,
   Scale,
   Share2,
   Phone,
   MessageCircle,
-  Calendar,
-  ShieldCheck,
   CheckCircle2,
-  MapPin,
-  Fuel,
-  Gauge,
-  Compass,
-  FileText,
-  Clock,
-  Sparkles,
+  FileCheck,
+  Award,
   ChevronLeft,
   ChevronRight,
-  Maximize2,
-  X,
-  CreditCard,
-  Building2,
-  Wrench,
-  Download
+  Download,
+  AlertCircle,
+  Eye,
+  Camera,
+  Car,
+  DollarSign
 } from 'lucide-react';
 
 export const VehicleDetailPage: React.FC = () => {
@@ -35,39 +34,43 @@ export const VehicleDetailPage: React.FC = () => {
   const {
     vehicles,
     getVehicleById,
-    formatPrice,
     favorites,
     toggleFavorite,
     comparison,
     toggleComparison,
+    formatPrice,
+    settings,
     getWhatsAppLink,
     setActiveModalVehicle,
     setIsTestDriveModalOpen,
     setIsEnquiryModalOpen,
-    settings,
+    setIsFinanceModalOpen,
     addToast
   } = useDealership();
 
   const vehicle = getVehicleById(id || '');
-  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [copiedLink, setCopiedLink] = useState(false);
 
-  // Crucial: Reset active photo index and scroll to top whenever ID changes
+  // Scroll to top and reset photo index whenever the vehicle ID changes
   useEffect(() => {
-    setActivePhotoIndex(0);
-    window.scrollTo(0, 0);
+    setSelectedPhotoIndex(0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
 
   if (!vehicle) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4">
-        <h2 className="text-2xl font-bold text-white mb-2">Vehicle Not Found</h2>
-        <p className="text-xs text-slate-400 mb-6">The vehicle you are searching for might have been sold or moved.</p>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center p-6 bg-slate-50 dark:bg-dark-950">
+        <AlertCircle className="w-16 h-16 text-rose-500 mb-4" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Vehicle Not Found</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+          The vehicle you are looking for might have been sold or removed from inventory.
+        </p>
         <Link
           to="/inventory"
-          className="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition"
+          className="px-6 py-3 rounded-xl bg-brand-600 text-white font-semibold text-sm shadow-glow hover:bg-brand-500 transition"
         >
-          Browse All Available Cars
+          Return to Inventory
         </Link>
       </div>
     );
@@ -76,312 +79,295 @@ export const VehicleDetailPage: React.FC = () => {
   const isFav = favorites.includes(vehicle.id);
   const isCompared = comparison.includes(vehicle.id);
 
-  // Similar vehicles (same make or body type)
+  // Similar vehicles from same make or body type
   const similarVehicles = vehicles
     .filter((v) => v.id !== vehicle.id && (v.make === vehicle.make || v.bodyType === vehicle.bodyType))
-    .slice(0, 3);
+    .slice(0, 4);
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
         title: `${vehicle.year} ${vehicle.make} ${vehicle.model} - Apex Motors`,
-        text: `Check out this ${vehicle.year} ${vehicle.make} ${vehicle.model} for sale at Apex Motors Kenya:`,
+        text: `Check out this ${vehicle.year} ${vehicle.make} ${vehicle.model} listed at ${formatPrice(vehicle.price)}`,
         url: window.location.href
-      }).catch(() => {});
+      });
     } else {
       navigator.clipboard.writeText(window.location.href);
+      setCopiedLink(true);
       addToast({
-        type: 'success',
+        type: 'info',
         title: 'Link Copied',
-        message: 'Vehicle URL copied to clipboard!'
+        message: 'Vehicle URL copied to clipboard.'
       });
+      setTimeout(() => setCopiedLink(false), 3000);
     }
   };
 
+  const nextPhoto = () => {
+    setSelectedPhotoIndex((prev) => (prev === vehicle.images.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevPhoto = () => {
+    setSelectedPhotoIndex((prev) => (prev === 0 ? vehicle.images.length - 1 : prev - 1));
+  };
+
+  // Indicative monthly installment with 20% deposit over 48 months at 13.5%
+  const deposit = vehicle.price * 0.2;
+  const loan = vehicle.price - deposit;
+  const rate = (13.5 / 100) / 12;
+  const term = 48;
+  const monthlyEst = Math.round((loan * (rate * Math.pow(1 + rate, term))) / (Math.pow(1 + rate, term) - 1));
+
   return (
-    <div className="min-h-screen bg-dark-950 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-dark-950 text-slate-900 dark:text-slate-100 py-6 sm:py-10 transition-colors">
       <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
-        {/* Breadcrumb & Navigation */}
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <Link to="/" className="hover:text-white transition">Home</Link>
-            <span>/</span>
-            <Link to="/inventory" className="hover:text-white transition">Inventory</Link>
-            <span>/</span>
-            <span className="text-brand-400 font-semibold truncate max-w-[200px] sm:max-w-none">
-              {vehicle.year} {vehicle.make} {vehicle.model}
-            </span>
-          </div>
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 overflow-x-auto whitespace-nowrap">
+          <Link to="/" className="hover:text-brand-600 dark:hover:text-white transition">Home</Link>
+          <span>/</span>
+          <Link to="/inventory" className="hover:text-brand-600 dark:hover:text-white transition">Inventory</Link>
+          <span>/</span>
+          <Link to={`/inventory?make=${vehicle.make}`} className="hover:text-brand-600 dark:hover:text-white transition">{vehicle.make}</Link>
+          <span>/</span>
+          <span className="text-slate-900 dark:text-white font-medium">{vehicle.year} {vehicle.model}</span>
+        </nav>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => toggleFavorite(vehicle.id)}
-              className={`p-2 rounded-xl border transition ${
-                isFav
-                  ? 'bg-blue-500/20 border-blue-500/40 text-blue-400'
-                  : 'bg-dark-900 border-slate-800 text-slate-400 hover:text-white'
-              }`}
-              title="Save vehicle"
-            >
-              <Heart className={`w-4 h-4 ${isFav ? 'fill-blue-500' : ''}`} />
-            </button>
+        {/* Top Header Card: Title, Badges, Price, and Actions */}
+        <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 mb-8 shadow-sm">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div>
+              <div className="flex flex-wrap items-center gap-2.5 mb-2">
+                <span className="px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-bold uppercase tracking-wider">
+                  {vehicle.condition}
+                </span>
+                <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-300 text-xs font-mono font-bold">
+                  Stock #{vehicle.stockNo}
+                </span>
+                {vehicle.status === 'reserved' && (
+                  <span className="px-3 py-1 rounded-full bg-amber-500 text-dark-950 text-xs font-bold uppercase tracking-wider">
+                    Under Reservation
+                  </span>
+                )}
+              </div>
 
-            <button
-              onClick={() => toggleComparison(vehicle.id)}
-              className={`p-2 rounded-xl border transition ${
-                isCompared
-                  ? 'bg-brand-500/20 border-brand-500/40 text-brand-400'
-                  : 'bg-dark-900 border-slate-800 text-slate-400 hover:text-white'
-              }`}
-              title="Compare vehicle"
-            >
-              <Scale className="w-4 h-4" />
-            </button>
+              <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+                {vehicle.year} {vehicle.make} {vehicle.model}
+              </h1>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-medium mt-1">
+                {vehicle.variant}
+              </p>
 
-            <button
-              onClick={handleShare}
-              className="p-2 rounded-xl bg-dark-900 border border-slate-800 text-slate-400 hover:text-white transition"
-              title="Share vehicle"
-            >
-              <Share2 className="w-4 h-4" />
-            </button>
+              <div className="flex items-center gap-4 mt-3 text-xs text-slate-500 dark:text-slate-400">
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+                  <span>Located at <strong>{vehicle.locationYard}</strong></span>
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1.5">
+                  <Eye className="w-4 h-4 text-slate-400" />
+                  <span>{vehicle.viewsCount || 1240} Views</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Price & Action Buttons */}
+            <div className="flex flex-col sm:flex-row lg:flex-col sm:items-end justify-between gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800">
+              <div>
+                <span className="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold block text-right">
+                  Drive-Away Price
+                </span>
+                <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-display text-right">
+                  {formatPrice(vehicle.price)}
+                </div>
+                <div className="text-xs text-emerald-600 dark:text-emerald-400 font-bold text-right mt-1">
+                  Est. Loan From {formatPrice(monthlyEst)} / month
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => toggleFavorite(vehicle.id)}
+                  className={`p-2.5 rounded-xl border transition ${
+                    isFav
+                      ? 'bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400'
+                      : 'bg-slate-100 dark:bg-dark-850 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900'
+                  }`}
+                  title="Save vehicle"
+                >
+                  <Heart className={`w-5 h-5 ${isFav ? 'fill-blue-500 text-blue-500' : ''}`} />
+                </button>
+
+                <button
+                  onClick={() => toggleComparison(vehicle.id)}
+                  className={`p-2.5 rounded-xl border transition ${
+                    isCompared
+                      ? 'bg-brand-500/10 border-brand-500/40 text-brand-600 dark:text-brand-400'
+                      : 'bg-slate-100 dark:bg-dark-850 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900'
+                  }`}
+                  title="Compare vehicle"
+                >
+                  <Scale className="w-5 h-5" />
+                </button>
+
+                <button
+                  onClick={handleShare}
+                  className="p-2.5 rounded-xl bg-slate-100 dark:bg-dark-850 hover:bg-slate-200 dark:hover:bg-dark-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 transition"
+                  title="Share vehicle"
+                >
+                  <Share2 className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Title & Quick Pricing Header */}
-        <div className="bg-dark-900 border border-slate-800 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-400 border border-brand-500/30 text-xs font-bold uppercase tracking-wider">
-                {vehicle.condition}
-              </span>
-              <span className="px-2.5 py-1 rounded-md bg-dark-800 text-slate-300 text-xs font-mono">
-                Stock #{vehicle.stockNo}
-              </span>
-              {vehicle.status === 'reserved' && (
-                <span className="px-2.5 py-1 rounded-md bg-amber-500 text-dark-950 text-xs font-bold uppercase">
-                  Reserved
-                </span>
-              )}
-              {vehicle.status === 'sold' && (
-                <span className="px-2.5 py-1 rounded-md bg-slate-700 text-slate-300 text-xs font-bold uppercase">
-                  Sold Out
-                </span>
-              )}
-            </div>
+        {/* Main Grid: Gallery on Left (8 cols), Sidebar on Right (4 cols) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column (8 cols) */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Gallery Component */}
+            <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm">
+              {/* Main Photo View */}
+              <div className="relative h-[320px] sm:h-[480px] w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-dark-950 mb-4 group">
+                <img
+                  src={vehicle.images[selectedPhotoIndex] || vehicle.images[0]}
+                  alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+                  className="w-full h-full object-cover"
+                />
 
-            <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-white">
-              {vehicle.year} {vehicle.make} {vehicle.model}
-            </h1>
-            <p className="text-sm sm:text-base text-slate-400 mt-0.5">{vehicle.variant}</p>
-          </div>
+                {/* Arrows */}
+                <button
+                  onClick={prevPhoto}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={nextPhoto}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
 
-          <div className="flex flex-col md:items-end">
-            <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
-              Cash / Outright Price
-            </span>
-            <div className="text-3xl sm:text-4xl font-extrabold text-brand-500 font-display">
-              {formatPrice(vehicle.price)}
-            </div>
-            {vehicle.originalPrice && vehicle.originalPrice > vehicle.price && (
-              <span className="text-xs text-rose-400 line-through mt-0.5">
-                Was {formatPrice(vehicle.originalPrice)}
-              </span>
-            )}
-            <span className="text-[11px] text-emerald-400 font-medium mt-1 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Includes 150-Point Pre-Purchase Inspection & Logbook Processing</span>
-            </span>
-          </div>
-        </div>
+                {/* Photo index counter badge */}
+                <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-lg bg-black/70 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5">
+                  <Camera className="w-4 h-4" />
+                  <span>Photo {selectedPhotoIndex + 1} of {vehicle.images.length}</span>
+                </div>
+              </div>
 
-        {/* Gallery & Quick Inquiry Action Box Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-          {/* Left Column: Multi-Photo Gallery */}
-          <div className="lg:col-span-8 space-y-4">
-            {/* Main Active Image with Lightbox zoom */}
-            <div className="relative h-[360px] sm:h-[480px] rounded-3xl overflow-hidden bg-dark-950 border border-slate-800 group">
-              <img
-                src={vehicle.images[activePhotoIndex] || vehicle.images[0]}
-                alt={`${vehicle.make} ${vehicle.model}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-
-              {/* Prev / Next Arrows */}
-              {vehicle.images.length > 1 && (
-                <>
-                  <button
-                    onClick={() =>
-                      setActivePhotoIndex((prev) =>
-                        prev === 0 ? vehicle.images.length - 1 : prev - 1
-                      )
-                    }
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-dark-950/70 hover:bg-dark-950 text-white backdrop-blur-md transition opacity-0 group-hover:opacity-100"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setActivePhotoIndex((prev) =>
-                        prev === vehicle.images.length - 1 ? 0 : prev + 1
-                      )
-                    }
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-dark-950/70 hover:bg-dark-950 text-white backdrop-blur-md transition opacity-0 group-hover:opacity-100"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </>
-              )}
-
-              {/* Expand Lightbox Button */}
-              <button
-                onClick={() => setIsLightboxOpen(true)}
-                className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-dark-950/80 hover:bg-dark-950 text-white backdrop-blur-md text-xs font-semibold flex items-center gap-1.5 transition"
-              >
-                <Maximize2 className="w-4 h-4" />
-                <span>Full Screen ({activePhotoIndex + 1}/{vehicle.images.length})</span>
-              </button>
-            </div>
-
-            {/* Thumbnails Strip */}
-            {vehicle.images.length > 1 && (
-              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+              {/* Thumbnails Row */}
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2.5">
                 {vehicle.images.map((img, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setActivePhotoIndex(idx)}
-                    className={`relative w-24 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition ${
-                      activePhotoIndex === idx
-                        ? 'border-brand-500 shadow-glow'
-                        : 'border-slate-800 opacity-60 hover:opacity-100'
+                    onClick={() => setSelectedPhotoIndex(idx)}
+                    className={`relative h-18 sm:h-22 rounded-xl overflow-hidden border-2 transition ${
+                      selectedPhotoIndex === idx
+                        ? 'border-brand-500 shadow-md scale-95'
+                        : 'border-transparent opacity-70 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
+                    <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
-            )}
+            </div>
 
             {/* Specifications Matrix Grid */}
-            <div className="bg-dark-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Compass className="w-5 h-5 text-brand-500" />
-                <span>Technical Specifications Overview</span>
-              </h3>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Year of Manufacture</span>
-                  <span className="text-sm font-bold text-white">{vehicle.year}</span>
+            <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Technical Specifications</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Odometer Mileage</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.mileage.toLocaleString()} km</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Verified Mileage</span>
-                  <span className="text-sm font-bold text-white">{vehicle.mileage.toLocaleString()} km</span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Engine Displacement</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.engineSize}</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Engine Capacity</span>
-                  <span className="text-sm font-bold text-white">{vehicle.engineSize}</span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Fuel Type</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.fuelType}</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Fuel Type</span>
-                  <span className="text-sm font-bold text-white">{vehicle.fuelType}</span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Transmission</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.transmission}</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Transmission</span>
-                  <span className="text-sm font-bold text-white">{vehicle.transmission}</span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Drivetrain</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.driveType}</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Drivetrain</span>
-                  <span className="text-sm font-bold text-white">{vehicle.driveType}</span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Body Style</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.bodyType}</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Body Style</span>
-                  <span className="text-sm font-bold text-white">{vehicle.bodyType}</span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Exterior Color</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.exteriorColor}</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Exterior Color</span>
-                  <span className="text-sm font-bold text-white truncate block">{vehicle.exteriorColor}</span>
-                </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Interior Color</span>
-                  <span className="text-sm font-bold text-white truncate block">{vehicle.interiorColor}</span>
-                </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750">
-                  <span className="text-slate-400 block mb-0.5">Chassis / VIN</span>
-                  <span className="text-sm font-bold text-white font-mono">{vehicle.vin || 'MX-VERIFIED'}</span>
-                </div>
-                <div className="p-3.5 rounded-xl bg-dark-850 border border-slate-750 sm:col-span-2">
-                  <span className="text-slate-400 block mb-0.5">Showroom Yard Location</span>
-                  <span className="text-sm font-bold text-brand-400">{vehicle.locationYard}</span>
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="pt-4 border-t border-slate-800 space-y-2">
-                <h4 className="text-sm font-bold text-white">Vehicle Description & Provenance</h4>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {vehicle.description}
-                </p>
-              </div>
-
-              {/* Features Checklist */}
-              <div className="pt-4 border-t border-slate-800 space-y-4">
-                <h4 className="text-sm font-bold text-white">Key Features & Factory Options</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  {vehicle.features.map((feat, i) => (
-                    <div key={i} className="flex items-center gap-2 text-slate-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Warranty & Service History */}
-              <div className="pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div className="p-4 rounded-xl bg-dark-950 border border-slate-800 space-y-1">
-                  <div className="flex items-center gap-1.5 text-amber-400 font-bold">
-                    <ShieldCheck className="w-4 h-4" />
-                    <span>Warranty Included</span>
-                  </div>
-                  <p className="text-slate-300">{vehicle.warranty}</p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-dark-950 border border-slate-800 space-y-1">
-                  <div className="flex items-center gap-1.5 text-blue-400 font-bold">
-                    <Wrench className="w-4 h-4" />
-                    <span>Service History</span>
-                  </div>
-                  <p className="text-slate-300">{vehicle.serviceHistory}</p>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Interior Color</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{vehicle.interiorColor}</span>
                 </div>
               </div>
             </div>
+
+            {/* Premium Features List */}
+            <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Installed Options & Packages</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {vehicle.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-200 font-medium">
+                    <CheckCircle2 className="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Vehicle Overview & Description */}
+            <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Vehicle Overview</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                {vehicle.description}
+              </p>
+
+              {vehicle.warranty && (
+                <div className="mt-6 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-xs text-amber-900 dark:text-amber-300 flex items-center gap-3">
+                  <Award className="w-6 h-6 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <div>
+                    <strong className="block text-amber-950 dark:text-amber-200 font-bold">Comprehensive Dealership Warranty:</strong>
+                    <span>{vehicle.warranty}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Asset Finance Calculator for this vehicle */}
+            <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+              <FinanceCalculator initialVehicle={vehicle} />
+            </div>
           </div>
 
-          {/* Right Column: CTA Action Card & Dealership Details */}
+          {/* Right Sidebar (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-dark-900 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl sticky top-28 space-y-5">
-              <div>
-                <span className="text-xs text-slate-400 uppercase tracking-wider block">Total Cash Price</span>
-                <div className="text-3xl font-extrabold text-white font-display">
-                  {formatPrice(vehicle.price)}
-                </div>
-                <p className="text-xs text-slate-400 mt-1">
-                  Available for viewing at <strong className="text-white">{vehicle.locationYard}</strong>
-                </p>
-              </div>
+            {/* Quick Contact & Action Card */}
+            <div className="sticky top-28 bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Interested in this Car?</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400">
+                Book a test drive or reach out to our sales advisor immediately.
+              </p>
 
-              {/* CTAs */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-3">
                 <a
                   href={getWhatsAppLink(vehicle)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition transform hover:-translate-y-0.5"
+                  className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition"
                 >
-                  <MessageCircle className="w-5 h-5" />
-                  <span>Chat on WhatsApp</span>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat on WhatsApp Direct</span>
                 </a>
 
                 <button
@@ -389,10 +375,10 @@ export const VehicleDetailPage: React.FC = () => {
                     setActiveModalVehicle(vehicle);
                     setIsTestDriveModalOpen(true);
                   }}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-blue-500 hover:from-brand-500 hover:to-blue-400 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-glow transition transform hover:-translate-y-0.5"
+                  className="w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-glow flex items-center justify-center gap-2 transition"
                 >
                   <Calendar className="w-4 h-4" />
-                  <span>Book a Test Drive</span>
+                  <span>Schedule Test Drive</span>
                 </button>
 
                 <button
@@ -400,69 +386,44 @@ export const VehicleDetailPage: React.FC = () => {
                     setActiveModalVehicle(vehicle);
                     setIsEnquiryModalOpen(true);
                   }}
-                  className="w-full py-3 px-4 rounded-xl bg-dark-800 hover:bg-dark-750 border border-slate-700 text-slate-200 hover:text-white font-semibold text-xs transition"
+                  className="w-full py-3.5 rounded-xl bg-slate-100 dark:bg-dark-850 hover:bg-slate-200 dark:hover:bg-dark-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs flex items-center justify-center gap-2 transition"
                 >
-                  Enquire About This Car
+                  <span>Send Enquiry / Make Offer</span>
                 </button>
 
                 <a
                   href={`tel:${settings.phone.replace(/\s+/g, '')}`}
-                  className="w-full py-3 px-4 rounded-xl bg-dark-800 hover:bg-dark-750 border border-slate-700 text-slate-200 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 transition"
+                  className="w-full py-3 rounded-xl bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center justify-center gap-2 transition"
                 >
-                  <Phone className="w-3.5 h-3.5 text-brand-500" />
-                  <span>Call Dealership: {settings.phone}</span>
+                  <Phone className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+                  <span>Call {settings.phone}</span>
                 </a>
               </div>
 
-              {/* Guarantees list */}
-              <div className="pt-4 border-t border-slate-800 space-y-2.5 text-xs text-slate-300">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>150-point diagnostic inspection passed</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Verified genuine mileage with JEVIC certificate</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Clean NTSA logbook ready for direct transfer</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Trade-ins accepted against this vehicle</span>
-                </div>
+              {/* Showroom Location Box */}
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-dark-850 border border-slate-100 dark:border-slate-800 text-xs space-y-2 mt-6">
+                <span className="font-bold text-slate-900 dark:text-white block">Viewing Location:</span>
+                <p className="text-slate-600 dark:text-slate-400">{vehicle.locationYard}</p>
+                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Open Mon-Sat: 8:00 AM - 6:30 PM</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Repayment Calculator for this vehicle (Keyed to vehicle.id so it fully updates!) */}
-        <div className="mb-16">
-          <FinanceCalculator key={vehicle.id} initialVehicle={vehicle} />
-        </div>
-
-        {/* Similar Vehicles */}
+        {/* Similar Vehicles Carousel / Grid */}
         {similarVehicles.length > 0 && (
-          <div>
+          <div className="mt-16 pt-12 border-t border-slate-200 dark:border-slate-800">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h3 className="text-2xl font-display font-bold text-white">
-                  Similar Vehicles in Stock
-                </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  You might also be interested in these alternatives.
-                </p>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Similar Vehicles You Might Like</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Explore alternatives with matching body style and features.</p>
               </div>
-              <Link
-                to="/inventory"
-                className="text-xs font-bold text-brand-400 hover:text-brand-300 transition"
-              >
+              <Link to="/inventory" className="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
                 View All Cars &rarr;
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {similarVehicles.map((simCar) => (
                 <VehicleCard key={simCar.id} vehicle={simCar} />
               ))}
@@ -470,56 +431,6 @@ export const VehicleDetailPage: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Fullscreen Lightbox Modal */}
-      {isLightboxOpen && (
-        <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-4">
-          <button
-            onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-6 right-6 p-3 rounded-full bg-dark-800 text-white hover:bg-slate-700 transition"
-          >
-            <X className="w-6 h-6" />
-          </button>
-
-          <div className="relative max-w-5xl w-full h-[75vh] flex items-center justify-center">
-            <img
-              src={vehicle.images[activePhotoIndex]}
-              alt={vehicle.model}
-              className="max-h-full max-w-full object-contain rounded-2xl"
-            />
-
-            {vehicle.images.length > 1 && (
-              <>
-                <button
-                  onClick={() =>
-                    setActivePhotoIndex((prev) =>
-                      prev === 0 ? vehicle.images.length - 1 : prev - 1
-                    )
-                  }
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-dark-900/80 text-white hover:bg-dark-900 transition"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                <button
-                  onClick={() =>
-                    setActivePhotoIndex((prev) =>
-                      prev === vehicle.images.length - 1 ? 0 : prev + 1
-                    )
-                  }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-dark-900/80 text-white hover:bg-dark-900 transition"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
-            )}
-          </div>
-
-          <div className="text-slate-400 text-xs mt-4">
-            Photo {activePhotoIndex + 1} of {vehicle.images.length} • {vehicle.year} {vehicle.make} {vehicle.model}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -61,29 +61,29 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-950 text-slate-100">
+    <div className="min-h-screen bg-slate-50 dark:bg-dark-950 text-slate-900 dark:text-slate-100 transition-colors">
       {/* 1. Hero Search Section */}
       <HeroSearch />
 
       {/* 2. Key Dealership Metrics Counter */}
-      <div className="border-y border-slate-800 bg-dark-900/60 py-6 sm:py-8">
+      <div className="border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-dark-900/60 py-6 sm:py-8 transition-colors">
         <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white font-display">150+</div>
-              <p className="text-xs text-slate-400 mt-0.5">Inspected Vehicles in Stock</p>
+              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-display">150+</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Inspected Vehicles in Stock</p>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-brand-500 font-display">1,800+</div>
-              <p className="text-xs text-slate-400 mt-0.5">Satisfied Car Owners</p>
+              <div className="text-2xl sm:text-3xl font-extrabold text-brand-600 dark:text-brand-500 font-display">1,800+</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Satisfied Car Owners</p>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-amber-400 font-display">48 Hours</div>
-              <p className="text-xs text-slate-400 mt-0.5">Bank Asset Finance Approval</p>
+              <div className="text-2xl sm:text-3xl font-extrabold text-amber-600 dark:text-amber-400 font-display">48 Hours</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Bank Asset Finance Approval</p>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-display">100%</div>
-              <p className="text-xs text-slate-400 mt-0.5">Clean NTSA Logbook Guarantee</p>
+              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-display">100%</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Clean NTSA Logbook Guarantee</p>
             </div>
           </div>
         </div>
@@ -93,21 +93,21 @@ export const HomePage: React.FC = () => {
       <section className="py-16 sm:py-20 max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-semibold mb-2">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Hand-Picked Excellence</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
               Featured Vehicles
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
               Top-specification premium models freshly detailed and ready for immediate driving.
             </p>
           </div>
 
           <Link
             to="/inventory?badge=featured"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-400 hover:text-brand-300 transition"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition"
           >
             <span>View All Featured Cars</span>
             <ArrowRight className="w-4 h-4" />
@@ -122,13 +122,13 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 4. Browse by Popular Makes */}
-      <section className="py-12 bg-dark-900 border-y border-slate-800">
+      <section className="py-14 bg-white dark:bg-dark-900 border-y border-slate-200 dark:border-slate-800 transition-colors">
         <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 dark:text-white tracking-tight">
               Browse Vehicles by Make
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
               Explore trusted Japanese and European automotive brands in our yard.
             </p>
           </div>
@@ -138,42 +138,42 @@ export const HomePage: React.FC = () => {
               <button
                 key={m.name}
                 onClick={() => handleMakeClick(m.name)}
-                className="p-4 rounded-2xl bg-dark-950 border border-slate-800 hover:border-brand-500/50 hover:bg-dark-850 transition-all duration-200 group text-center"
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-dark-850 hover:bg-white dark:hover:bg-dark-800 border border-slate-200 dark:border-slate-700/80 transition-all text-center group hover:shadow-lg hover:border-brand-500"
               >
-                <div className="text-2xl mb-1.5 group-hover:scale-110 transition-transform">
-                  {m.icon}
-                </div>
-                <h4 className="text-xs font-bold text-white group-hover:text-brand-400 transition-colors">
+                <div className="text-2xl mb-1.5 group-hover:scale-110 transition-transform">{m.icon}</div>
+                <div className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors truncate">
                   {m.name}
-                </h4>
-                <span className="text-[10px] text-slate-400">{m.count} In Stock</span>
+                </div>
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  {m.count} Cars
+                </div>
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. New Arrivals Showcase */}
+      {/* 5. New Arrivals Section */}
       <section className="py-16 sm:py-20 max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-semibold mb-2">
-              <Car className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-2">
+              <Clock className="w-3.5 h-3.5" />
               <span>Direct Japanese & UK Imports</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
-              New Arrivals This Week
+            <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+              New Arrivals in Showroom
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Recently cleared vehicles with complete JEVIC inspection reports and export certifications.
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Freshly offloaded and inspected vehicles with verified auction sheets and pre-delivery service.
             </p>
           </div>
 
           <Link
             to="/inventory?badge=new"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-400 hover:text-brand-300 transition"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition"
           >
-            <span>Explore All New Arrivals</span>
+            <span>View All New Arrivals</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -186,210 +186,216 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 6. Browse by Body Style */}
-      <section className="py-12 bg-dark-900 border-y border-slate-800">
+      <section className="py-14 bg-white dark:bg-dark-900 border-y border-slate-200 dark:border-slate-800 transition-colors">
         <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
-              Filter by Body Type
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 dark:text-white tracking-tight">
+              Browse by Vehicle Body Type
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Find the perfect body silhouette for your daily drive, family travel, or business.
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Choose the right vehicle configuration for your lifestyle or commercial needs.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {bodyTypesList.map((b) => (
               <button
                 key={b.name}
                 onClick={() => handleBodyClick(b.name)}
-                className="p-5 rounded-2xl bg-dark-950 border border-slate-800 hover:border-brand-500/60 hover:bg-dark-850 transition-all duration-200 group text-left flex items-center justify-between"
+                className="p-6 rounded-2xl bg-slate-50 dark:bg-dark-850 hover:bg-white dark:hover:bg-dark-800 border border-slate-200 dark:border-slate-700/80 text-left transition-all group hover:shadow-lg hover:border-brand-500"
               >
-                <div>
-                  <h4 className="text-sm font-bold text-white group-hover:text-brand-400 transition-colors">
-                    {b.name}
-                  </h4>
-                  <p className="text-xs text-slate-400">{b.desc}</p>
-                  <span className="text-[11px] text-brand-400 font-semibold mt-2 inline-block">
-                    {b.count} Vehicles Available
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg">
+                    <Car className="w-6 h-6" />
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-slate-200 dark:bg-dark-750 text-slate-700 dark:text-slate-300 text-xs font-semibold">
+                    {b.count} Units
                   </span>
                 </div>
-                <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                  {b.name}s
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  {b.desc}
+                </p>
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 7. Trust Guarantees & 150-Point Inspection */}
+      {/* 7. 150-Point Inspection Guarantees */}
       <TrustGuarantees />
 
-      {/* 8. Interactive Asset Finance Calculator Teaser */}
+      {/* 8. Asset Finance Loan Calculator Section */}
       <section className="py-16 sm:py-20 max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
         <FinanceCalculator />
       </section>
 
-      {/* 9. Sell / Trade-in Banner */}
-      <section className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6 pb-16">
-        <div className="rounded-3xl bg-gradient-to-r from-brand-900/90 via-dark-900 to-dark-950 border border-brand-500/30 p-8 sm:p-12 relative overflow-hidden shadow-2xl">
-          <div className="relative z-10 max-w-2xl space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-400">
-              Hassle-Free Car Valuation
-            </span>
-            <h3 className="text-3xl sm:text-4xl font-display font-extrabold text-white leading-tight">
-              Looking to Sell or Trade-In Your Current Vehicle?
-            </h3>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              We offer instant competitive cash buyouts or seamless trade-in allowances toward any vehicle in our showroom. Fair pricing with same-day payment.
-            </p>
+      {/* 9. Trade-In / Sell Your Car Banner */}
+      <section className="py-12 bg-white dark:bg-dark-900 border-y border-slate-200 dark:border-slate-800 transition-colors">
+        <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
+          <div className="bg-gradient-to-r from-blue-900 via-brand-800 to-indigo-900 rounded-3xl p-8 sm:p-12 text-white flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+            <div className="relative z-10 max-w-2xl space-y-3">
+              <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">
+                Instant Valuation & Fair Pricing
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-display font-extrabold leading-tight">
+                Want to Upgrade? Sell or Trade-In Your Current Car Today.
+              </h2>
+              <p className="text-xs sm:text-sm text-blue-100 leading-relaxed">
+                Get a transparent pre-inspection market offer in 30 minutes. We accept trade-ins against all vehicles in our inventory with zero hassle.
+              </p>
+            </div>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="relative z-10 flex flex-col sm:flex-row gap-3 w-full lg:w-auto shrink-0">
               <button
                 onClick={() => setIsTradeInModalOpen(true)}
-                className="px-6 py-3 rounded-xl bg-white text-dark-950 hover:bg-slate-100 font-bold text-sm shadow-xl transition transform hover:-translate-y-0.5"
+                className="px-6 py-3.5 rounded-xl bg-white text-brand-900 hover:bg-slate-100 font-bold text-sm shadow-xl transition transform hover:-translate-y-0.5 text-center"
               >
-                Get Free Trade-In Valuation
+                Get Trade-In Valuation
               </button>
               <a
-                href={getWhatsAppLink(undefined, "Hello Apex Motors, I want to trade in my car. Please assist me with valuation.")}
+                href={getWhatsAppLink(undefined, 'Hello, I want to trade in my car at Apex Motors Kenya.')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center gap-2 transition"
+                className="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>Chat with Valuation Team</span>
+                <span>Chat with Appraiser</span>
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 10. Customer Reviews Section */}
+      {/* 10. Customer Testimonials */}
       <ReviewsSection />
 
-      {/* 11. Latest Blog & Automotive Guides */}
-      <section className="py-16 sm:py-20 bg-dark-900 border-y border-slate-800">
-        <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-semibold mb-2">
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>Automotive Insights</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
-                Latest News & Buying Guides
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Expert tips on vehicle maintenance, financing approvals, and Kenyan car comparisons.
-              </p>
-            </div>
-
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-400 hover:text-brand-300 transition"
-            >
-              <span>View All Articles</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {blogPosts.slice(0, 3).map((post) => (
-              <div
-                key={post.id}
-                className="bg-dark-950 border border-slate-800 hover:border-slate-700 rounded-2xl overflow-hidden transition group flex flex-col justify-between"
-              >
-                <div>
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={post.featuredImage}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-dark-950/80 backdrop-blur-sm text-[11px] font-semibold text-brand-400">
-                      {post.category}
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center gap-3 text-[11px] text-slate-400 mb-2">
-                      <span>{post.date}</span>
-                      <span>•</span>
-                      <span>{post.readTime}</span>
-                    </div>
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="block text-base font-bold text-white hover:text-brand-400 transition line-clamp-2 mb-2"
-                    >
-                      {post.title}
-                    </Link>
-                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-5 pt-0">
-                  <Link
-                    to={`/blog/${post.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-brand-400 hover:text-brand-300 transition"
-                  >
-                    <span>Read Article</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 12. Showroom Yards & Contact Section */}
+      {/* 11. Automotive News & Guides */}
       <section className="py-16 sm:py-20 max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl font-display font-extrabold text-white tracking-tight">
-            Visit Our Showroom Yards
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Walk in today or book a private appointment to view and test-drive your next vehicle.
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-semibold mb-2">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Knowledge Center</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Car Buying Guides & Reviews
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Expert advice on import duty, maintenance, bank asset finance, and comparisons.
+            </p>
+          </div>
+
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition"
+          >
+            <span>Read All Guides</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {locations.map((loc) => (
-            <div
-              key={loc.id}
-              className="bg-dark-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between"
+          {blogPosts.slice(0, 3).map((post) => (
+            <Link
+              key={post.id}
+              to={`/blog/${post.slug}`}
+              className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden group hover:border-brand-500 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center">
-                    <MapPin className="w-4 h-4" />
+              <div>
+                <div className="h-48 overflow-hidden bg-slate-100 dark:bg-dark-950 relative">
+                  <img
+                    src={post.featuredImage}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider">
+                    {post.category}
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium block mb-1.5">
+                    {post.date} • {post.readTime}
                   </span>
-                  {loc.isMain && (
-                    <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-[10px] font-bold text-amber-400 uppercase">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-snug">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-brand-600 dark:text-brand-400">
+                <span>Read Full Guide</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 12. Showroom Yard Locations */}
+      <section className="py-14 bg-white dark:bg-dark-900 border-t border-slate-200 dark:border-slate-800 transition-colors">
+        <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
+          <div className="text-center max-w-xl mx-auto mb-10">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 dark:text-white tracking-tight">
+              Visit Our Showroom Yards
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Conveniently located in Nairobi with secure parking and vehicle inspection ramps.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {locations.map((yard) => (
+              <div
+                key={yard.id}
+                className="p-6 rounded-3xl bg-slate-50 dark:bg-dark-850 border border-slate-200 dark:border-slate-800 space-y-4"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                    <MapPin className="w-5 h-5" />
+                  </span>
+                  {yard.isMain && (
+                    <span className="px-2.5 py-0.5 rounded-full bg-brand-600 text-white text-[10px] font-bold uppercase">
                       Headquarters
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-lg font-bold text-white">{loc.name}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed">{loc.address}, {loc.city}</p>
-                <div className="text-xs text-slate-400 space-y-1 pt-2 border-t border-slate-800">
-                  <p>🕒 {loc.openingHours}</p>
-                  <p>📞 {loc.phone}</p>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">{yard.name}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{yard.address}, {yard.city}</p>
+                </div>
+
+                <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-750">
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+                    <span>{yard.phone}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+                    <span>{yard.openingHours}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex gap-2">
+                  <button
+                    onClick={() => {
+                      setIsTestDriveModalOpen(true);
+                    }}
+                    className="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-glow transition text-center"
+                  >
+                    Visit Yard & Test Drive
+                  </button>
                 </div>
               </div>
-
-              <div className="pt-6">
-                <button
-                  onClick={() => setIsTestDriveModalOpen(true)}
-                  className="w-full py-2.5 rounded-xl bg-dark-850 hover:bg-dark-800 border border-slate-700 text-slate-200 text-xs font-bold transition"
-                >
-                  Schedule Viewing at this Yard
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
     </div>

@@ -115,27 +115,23 @@ export const InventoryPage: React.FC = () => {
     return count;
   }, [filters]);
 
-  // Quick Marketplace Quick-Chips
-  const quickPills = [
-    { label: 'All Stock', active: !filters.make && !filters.bodyType && !filters.fuelType && !filters.maxPrice, onClick: resetFilters },
-    { label: '🚙 SUVs & 4x4s', active: filters.bodyType === 'SUV', onClick: () => setFilters((p) => ({ ...p, bodyType: p.bodyType === 'SUV' ? '' : 'SUV' })) },
-    { label: '🏎️ Sedans', active: filters.bodyType === 'Sedan', onClick: () => setFilters((p) => ({ ...p, bodyType: p.bodyType === 'Sedan' ? '' : 'Sedan' })) },
-    { label: '⭐ Toyota', active: filters.make === 'Toyota', onClick: () => setFilters((p) => ({ ...p, make: p.make === 'Toyota' ? '' : 'Toyota' })) },
-    { label: '✨ Mercedes-Benz', active: filters.make === 'Mercedes-Benz', onClick: () => setFilters((p) => ({ ...p, make: p.make === 'Mercedes-Benz' ? '' : 'Mercedes-Benz' })) },
-    { label: '⚡ Hybrid Cars', active: filters.fuelType === 'Hybrid', onClick: () => setFilters((p) => ({ ...p, fuelType: p.fuelType === 'Hybrid' ? '' : 'Hybrid' })) },
-    { label: '💰 Under KES 3M', active: filters.maxPrice === 3000000, onClick: () => setFilters((p) => ({ ...p, maxPrice: p.maxPrice === 3000000 ? '' : 3000000 })) },
-    { label: '💎 Luxury 5M+', active: filters.minPrice === 5000000, onClick: () => setFilters((p) => ({ ...p, minPrice: p.minPrice === 5000000 ? '' : 5000000 })) },
-    { label: '📍 Ngong Rd HQ', active: filters.locationYard === 'Main Yard & Headquarters', onClick: () => setFilters((p) => ({ ...p, locationYard: p.locationYard === 'Main Yard & Headquarters' ? '' : 'Main Yard & Headquarters' })) },
-    { label: '📍 Kiambu Rd', active: filters.locationYard === 'Kiambu Road Luxury Showroom', onClick: () => setFilters((p) => ({ ...p, locationYard: p.locationYard === 'Kiambu Road Luxury Showroom' ? '' : 'Kiambu Road Luxury Showroom' })) }
+  const quickFilterChips = [
+    { label: 'All Stock', active: activeFiltersCount === 0, onClick: resetFilters },
+    { label: 'SUVs & 4x4', active: filters.bodyType === 'SUV', onClick: () => setFilters((p) => ({ ...p, bodyType: p.bodyType === 'SUV' ? '' : 'SUV' })) },
+    { label: 'Under KES 3.5M', active: filters.maxPrice === 3500000, onClick: () => setFilters((p) => ({ ...p, maxPrice: p.maxPrice === 3500000 ? '' : 3500000 })) },
+    { label: 'Toyota Only', active: filters.make === 'Toyota', onClick: () => setFilters((p) => ({ ...p, make: p.make === 'Toyota' ? '' : 'Toyota' })) },
+    { label: 'Mercedes-Benz', active: filters.make === 'Mercedes-Benz', onClick: () => setFilters((p) => ({ ...p, make: p.make === 'Mercedes-Benz' ? '' : 'Mercedes-Benz' })) },
+    { label: 'Hybrids', active: filters.fuelType === 'Hybrid', onClick: () => setFilters((p) => ({ ...p, fuelType: p.fuelType === 'Hybrid' ? '' : 'Hybrid' })) },
+    { label: 'New Arrivals', active: !!filters.isNewArrival, onClick: () => setFilters((p) => ({ ...p, isNewArrival: !p.isNewArrival })) }
   ];
 
   const FilterControls = () => (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-brand-400" />
-          <h3 className="font-bold text-sm text-white">Filter Marketplace</h3>
+          <SlidersHorizontal className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+          <h3 className="font-bold text-sm text-slate-900 dark:text-white">Filter Marketplace</h3>
           {activeFiltersCount > 0 && (
             <span className="px-2 py-0.5 rounded-full bg-brand-600 text-white text-xs font-mono font-bold">
               {activeFiltersCount}
@@ -145,7 +141,7 @@ export const InventoryPage: React.FC = () => {
         {activeFiltersCount > 0 && (
           <button
             onClick={resetFilters}
-            className="text-xs text-rose-400 hover:underline flex items-center gap-1"
+            className="text-xs text-rose-500 hover:underline flex items-center gap-1"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Reset All</span>
@@ -155,13 +151,13 @@ export const InventoryPage: React.FC = () => {
 
       {/* Make */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Make / Manufacturer
         </label>
         <select
           value={filters.make}
           onChange={(e) => setFilters((prev) => ({ ...prev, make: e.target.value, model: '' }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
         >
           <option value="">All Makes (Toyota, Benz...)</option>
           {makes.map((m) => (
@@ -174,14 +170,14 @@ export const InventoryPage: React.FC = () => {
 
       {/* Model */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Model
         </label>
         <select
           value={filters.model}
           disabled={!filters.make && models.length > 20}
           onChange={(e) => setFilters((prev) => ({ ...prev, model: e.target.value }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500 disabled:opacity-50"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500 disabled:opacity-50"
         >
           <option value="">All Models</option>
           {models.map((mod) => (
@@ -194,13 +190,13 @@ export const InventoryPage: React.FC = () => {
 
       {/* Price Range */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Max Price ({formatPrice(filters.maxPrice || 15000000)})
         </label>
         <select
           value={filters.maxPrice}
           onChange={(e) => setFilters((prev) => ({ ...prev, maxPrice: e.target.value ? Number(e.target.value) : '' }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
         >
           <option value="">Any Price</option>
           <option value="2000000">Under KES 2,000,000</option>
@@ -214,13 +210,13 @@ export const InventoryPage: React.FC = () => {
 
       {/* Body Type */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Body Style
         </label>
         <select
           value={filters.bodyType}
           onChange={(e) => setFilters((prev) => ({ ...prev, bodyType: e.target.value }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
         >
           <option value="">All Body Styles</option>
           {bodyTypes.map((bt) => (
@@ -233,15 +229,15 @@ export const InventoryPage: React.FC = () => {
 
       {/* Fuel Type */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Fuel Type
         </label>
         <select
           value={filters.fuelType}
           onChange={(e) => setFilters((prev) => ({ ...prev, fuelType: e.target.value }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
         >
-          <option value="">All Fuel Types</option>
+          <option value="">All Fuels</option>
           {fuelTypes.map((ft) => (
             <option key={ft} value={ft}>
               {ft}
@@ -252,13 +248,13 @@ export const InventoryPage: React.FC = () => {
 
       {/* Transmission */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Transmission
         </label>
         <select
           value={filters.transmission}
           onChange={(e) => setFilters((prev) => ({ ...prev, transmission: e.target.value }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
         >
           <option value="">All Transmissions</option>
           {transmissions.map((tr) => (
@@ -269,17 +265,36 @@ export const InventoryPage: React.FC = () => {
         </select>
       </div>
 
-      {/* Showroom Yard */}
+      {/* Condition */}
       <div>
-        <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
+          Vehicle Condition
+        </label>
+        <select
+          value={filters.condition}
+          onChange={(e) => setFilters((prev) => ({ ...prev, condition: e.target.value }))}
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
+        >
+          <option value="">All Conditions</option>
+          {conditions.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Showroom Yard Location */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
           Showroom Yard
         </label>
         <select
           value={filters.locationYard}
           onChange={(e) => setFilters((prev) => ({ ...prev, locationYard: e.target.value }))}
-          className="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+          className="w-full bg-slate-50 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
         >
-          <option value="">All Showroom Yards</option>
+          <option value="">All Yard Locations</option>
           {locations.map((loc) => (
             <option key={loc.id} value={loc.name}>
               {loc.name}
@@ -287,123 +302,112 @@ export const InventoryPage: React.FC = () => {
           ))}
         </select>
       </div>
-
-      {/* Checkboxes */}
-      <div className="pt-2 border-t border-slate-800 space-y-2">
-        <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={!!filters.isFeatured}
-            onChange={(e) => setFilters((prev) => ({ ...prev, isFeatured: e.target.checked }))}
-            className="rounded bg-dark-800 border-slate-700 text-brand-500 focus:ring-brand-500"
-          />
-          <span>Featured Vehicles Only</span>
-        </label>
-
-        <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={!!filters.isNewArrival}
-            onChange={(e) => setFilters((prev) => ({ ...prev, isNewArrival: e.target.checked }))}
-            className="rounded bg-dark-800 border-slate-700 text-brand-500 focus:ring-brand-500"
-          />
-          <span>New Arrivals Only</span>
-        </label>
-      </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-dark-950 py-6 sm:py-10 pb-24 md:pb-12">
+    <div className="min-h-screen bg-slate-50 dark:bg-dark-950 text-slate-900 dark:text-slate-100 py-6 sm:py-10 transition-colors">
       <div className="max-w-[1550px] mx-auto px-3 sm:px-5 lg:px-6">
         {/* Marketplace Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
-            <span>Marketplace</span> / <span className="text-brand-400 font-semibold">Vehicles in Stock</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
-                Verified Vehicles Marketplace
-              </h1>
-              <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-                {filteredVehicles.length} vehicles available across 3 Nairobi showroom yards. 100% inspected with clean logbooks.
-              </p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-brand-600 dark:text-brand-400 tracking-wider uppercase">
+                Direct Imports & Certified Stock
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-[11px] font-bold">
+                {filteredVehicles.length} Units Ready
+              </span>
             </div>
-
-            {/* Mobile Filter Button */}
-            <button
-              onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 text-white text-xs font-bold shadow-glow"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              <span>Filters {activeFiltersCount > 0 ? `(${activeFiltersCount})` : ''}</span>
-            </button>
+            <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Automotive Marketplace
+            </h1>
           </div>
-        </div>
 
-        {/* Horizontal Quick-Filter Scrollable Chips (Marketplace standard) */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-none">
-          {quickPills.map((pill, idx) => (
-            <button
-              key={idx}
-              onClick={pill.onClick}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
-                pill.active
-                  ? 'bg-brand-600 text-white border-brand-500 shadow-glow'
-                  : 'bg-dark-900 border-slate-800 text-slate-300 hover:text-white hover:bg-dark-850'
-              }`}
-            >
-              {pill.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Search Bar & Sorting Controls */}
-        <div className="bg-dark-900 border border-slate-800 rounded-2xl p-3 sm:p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
-          <div className="relative w-full md:w-96">
+          {/* Search bar in header */}
+          <div className="relative w-full md:w-80">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
-              placeholder="Search make, model, stock # or feature..."
+              placeholder="Search make, model, stock#..."
               value={filters.search}
-              onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
-              className="w-full bg-dark-800 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-brand-500 transition"
+              onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))}
+              className="w-full bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500 shadow-sm"
             />
             {filters.search && (
               <button
-                onClick={() => setFilters((prev) => ({ ...prev, search: '' }))}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                onClick={() => setFilters((p) => ({ ...p, search: '' }))}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
+        </div>
 
-          <div className="flex items-center justify-between w-full md:w-auto gap-4">
-            <div className="flex items-center gap-2 text-xs">
-              <span className="text-slate-400 shrink-0 font-medium">Sort:</span>
+        {/* Quick Marketplace Filter Chips */}
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-4 mb-6 -mx-3 px-3 sm:mx-0 sm:px-0">
+          {quickFilterChips.map((chip, idx) => (
+            <button
+              key={idx}
+              onClick={chip.onClick}
+              className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold transition border shrink-0 ${
+                chip.active
+                  ? 'bg-brand-600 text-white border-brand-600 shadow-glow'
+                  : 'bg-white dark:bg-dark-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-brand-500 shadow-sm'
+              }`}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Control Bar (Mobile filter toggle, View modes, Sort) */}
+        <div className="flex items-center justify-between gap-3 mb-6 p-3 bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+          {/* Mobile Filter Button */}
+          <button
+            onClick={() => setMobileFilterOpen(true)}
+            className="lg:hidden flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-dark-850 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold"
+          >
+            <Filter className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+            <span>Filters</span>
+            {activeFiltersCount > 0 && (
+              <span className="w-4 h-4 rounded-full bg-brand-600 text-white text-[10px] flex items-center justify-center">
+                {activeFiltersCount}
+              </span>
+            )}
+          </button>
+
+          <span className="hidden sm:inline text-xs text-slate-500 dark:text-slate-400">
+            Showing <strong className="text-slate-900 dark:text-white">{filteredVehicles.length}</strong> vehicles
+          </span>
+
+          <div className="flex items-center gap-3">
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline">Sort:</span>
               <select
                 value={filters.sortBy}
-                onChange={(e: any) => setFilters((prev) => ({ ...prev, sortBy: e.target.value }))}
-                className="bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500 font-medium"
+                onChange={(e) => setFilters((prev) => ({ ...prev, sortBy: e.target.value as any }))}
+                className="bg-slate-50 dark:bg-dark-850 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
               >
                 <option value="newest">Newest Listed</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>
                 <option value="year_desc">Year: Newest First</option>
-                <option value="mileage_asc">Mileage: Lowest First</option>
+                <option value="mileage_asc">Lowest Mileage</option>
                 <option value="popular">Most Popular</option>
               </select>
             </div>
 
-            {/* View Mode */}
-            <div className="flex items-center bg-dark-800 p-1 rounded-xl border border-slate-700">
+            {/* View Mode Toggle */}
+            <div className="hidden sm:flex items-center bg-slate-100 dark:bg-dark-850 p-1 rounded-xl border border-slate-200 dark:border-slate-800">
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-1.5 rounded-lg transition ${
-                  viewMode === 'grid' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-dark-750 text-brand-600 dark:text-white shadow-sm'
+                    : 'text-slate-400 hover:text-slate-600'
                 }`}
                 title="Grid View"
               >
@@ -412,7 +416,9 @@ export const InventoryPage: React.FC = () => {
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-1.5 rounded-lg transition ${
-                  viewMode === 'list' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+                  viewMode === 'list'
+                    ? 'bg-white dark:bg-dark-750 text-brand-600 dark:text-white shadow-sm'
+                    : 'text-slate-400 hover:text-slate-600'
                 }`}
                 title="List View"
               >
@@ -423,58 +429,58 @@ export const InventoryPage: React.FC = () => {
         </div>
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Desktop Left Sidebar Filters */}
-          <div className="hidden lg:block lg:col-span-3">
-            <div className="bg-dark-900 border border-slate-800 rounded-3xl p-6 sticky top-28">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
+          {/* Desktop Filter Sidebar */}
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-28 bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
               <FilterControls />
             </div>
-          </div>
+          </aside>
 
-          {/* Right Vehicles Catalog */}
-          <div className="lg:col-span-9">
-            {filteredVehicles.length === 0 ? (
-              <div className="bg-dark-900 border border-slate-800 rounded-3xl p-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-dark-800 border border-slate-700 flex items-center justify-center mx-auto text-slate-500">
+          {/* Vehicle Cards Grid / List */}
+          <main className="lg:col-span-3">
+            {filteredVehicles.length > 0 ? (
+              <div
+                className={
+                  viewMode === 'grid'
+                    ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6'
+                    : 'space-y-6'
+                }
+              >
+                {filteredVehicles.map((car) => (
+                  <VehicleCard key={car.id} vehicle={car} viewMode={viewMode} />
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-dark-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center space-y-4 shadow-sm">
+                <div className="w-16 h-16 rounded-2xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center mx-auto">
                   <Car className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-white">No Matching Vehicles Found</h3>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                  Try adjusting your search criteria or resetting filters to view all available yard inventory.
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">No Vehicles Match Your Search</h3>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                  We couldn't find any vehicle matching the selected filters. Try broadening your budget range or clearing some filters.
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition shadow-glow"
+                  className="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-glow transition"
                 >
                   Reset All Filters
                 </button>
               </div>
-            ) : (
-              <div
-                className={
-                  viewMode === 'grid'
-                    ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
-                    : 'space-y-4'
-                }
-              >
-                {filteredVehicles.map((vehicle) => (
-                  <VehicleCard key={vehicle.id} vehicle={vehicle} viewMode={viewMode} />
-                ))}
-              </div>
             )}
-          </div>
+          </main>
         </div>
       </div>
 
-      {/* Mobile Filters Slide-up Drawer */}
+      {/* Mobile Slide-Up Filter Drawer */}
       {mobileFilterOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-dark-950/80 backdrop-blur-md animate-in fade-in">
-          <div className="bg-dark-900 border-t sm:border border-slate-800 rounded-t-3xl sm:rounded-3xl w-full max-w-lg max-h-[85vh] p-6 overflow-y-auto space-y-6">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="font-bold text-base text-white">Filter Cars</h3>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm lg:hidden animate-in fade-in">
+          <div className="bg-white dark:bg-dark-900 border-t border-slate-200 dark:border-slate-800 rounded-t-3xl max-h-[85vh] w-full p-6 overflow-y-auto shadow-2xl animate-in slide-in-from-bottom">
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">Marketplace Filters</h3>
               <button
                 onClick={() => setMobileFilterOpen(false)}
-                className="p-1.5 rounded-lg bg-dark-800 text-slate-400 hover:text-white"
+                className="p-2 rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-500 dark:text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -482,12 +488,18 @@ export const InventoryPage: React.FC = () => {
 
             <FilterControls />
 
-            <div className="pt-4 border-t border-slate-800 sticky bottom-0 bg-dark-900 pb-2">
+            <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800 flex gap-3">
+              <button
+                onClick={resetFilters}
+                className="w-1/3 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-300 font-bold text-xs"
+              >
+                Reset
+              </button>
               <button
                 onClick={() => setMobileFilterOpen(false)}
-                className="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-glow"
+                className="w-2/3 py-3 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-glow"
               >
-                Show {filteredVehicles.length} Matching Vehicles
+                Show {filteredVehicles.length} Vehicles
               </button>
             </div>
           </div>
